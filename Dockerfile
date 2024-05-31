@@ -1,17 +1,16 @@
 FROM python:3.11.4-slim-buster
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install -r /app/requirements.txt
-
-COPY . /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-ENV PORT=8000
-EXPOSE $PORT
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . /app
 
 RUN python manage.py migrate
-
-RUN python manage.py ensure_adminuser --username=admin --email=admin@example.com --password=pass
+RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
 
 CMD python manage.py runserver 0.0.0.0:$PORT
