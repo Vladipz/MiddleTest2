@@ -11,7 +11,6 @@ class GalleryViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        # Создание объектов для тестирования
         cls.category1 = Category.objects.create(name="Category 1")
         cls.category2 = Category.objects.create(name="Category 2")
         cls.image1 = Image.objects.create(
@@ -41,19 +40,13 @@ class GalleryViewTest(TestCase):
         response = self.client.get(reverse("main"))
         self.assertIn("categories", response.context)
         categories = response.context["categories"]
-        self.assertEqual(
-            len(categories), 2
-        )  # Проверяем, что все категории передаются в контекст
+        self.assertEqual(len(categories), 2)
 
     def test_gallery_view_display(self):
         response = self.client.get(reverse("main"))
-        self.assertContains(
-            response, self.category1.name
-        )  # Проверяем, что имя категории отображается
+        self.assertContains(response, self.category1.name)
         self.assertContains(response, self.category2.name)
-        self.assertContains(
-            response, self.image1.title
-        )  # Проверяем, что заголовки изображений отображаются
+        self.assertContains(response, self.image1.title)
         self.assertContains(response, self.image2.title)
 
 
@@ -61,7 +54,6 @@ class ImageDetailViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        # Создание объекта для тестирования
         cls.image = Image.objects.create(
             title="Test Image",
             image="test_image.jpg",
