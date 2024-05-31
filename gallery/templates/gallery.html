@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>All Images by Category</h1>
+    <div class="row">
+        {% for category in categories %}
+            <div class="col-md-12">
+                <h2>{{ category.name }}</h2>
+                <div class="row">
+                    {% for image in category.image_set.all %}
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ image.title }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
